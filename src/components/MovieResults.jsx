@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import MovieCard from "./MovieCard";
+import MovieCard from "./UI/MovieCard";
 import style from "./MovieResults.module.css";
 import { tmdbAxios } from "../api/axiosConfig";
 import { useRouteLoaderData, useSearchParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { genreId_Name } from "../store/atoms";
 import { languageObject } from "../api/keys";
+import Container from "./UI/Container";
+import GridList from "./UI/GridList";
 
 export default function MovieResults() {
   const response = useRouteLoaderData("movieList");
@@ -14,7 +16,7 @@ export default function MovieResults() {
   const [SearchParams] = useSearchParams();
 
   const [SearchMovies, setSearchMovies] = useState([]);
-  const [currentPage, setcurrentPage] = useState(1);
+  const [currentPage, setcurrentPage] = useState(2);
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -59,37 +61,41 @@ export default function MovieResults() {
       },
     });
     const { results } = response.data;
+
     setIsLoading(false);
     setSearchMovies((prev) => [...prev, ...results]);
   }
 
   return (
-    <section
-      className={`${style["movie-list"]} ${style["genre-list"]}`}
-      aria-label={`${ResultFor} Movies`}
-    >
-      <div className={style["title-wrapper"]}>
-        <h1 className={style["heading"]}>All {ResultFor} Movies</h1>
-      </div>
-
-      <div className={style["grid-list"]}>
-        {SearchMovies &&
-          SearchMovies.map((movie, index) => {
-            if (!movie.poster_path) return;
-            return <MovieCard key={index} movie={movie} />;
-          })}
-      </div>
-
-      {/* todo  onclick load more movies  */}
-      <button
-        className={`${style["btn"]} ${style["load-more"]} ${
-          isLoading && style["loading"]
-        }}`}
-        onClick={loadMoreHandler}
+    <Container>
+      <section
+        className={`${style["movie-list"]} ${style["genre-list"]}`}
+        aria-label={`${ResultFor} Movies`}
       >
-        Load More
-      </button>
-    </section>
+        <div className={style["title-wrapper"]}>
+          <h1 className={style["heading"]}>All {ResultFor} Movies</h1>
+        </div>
+
+        <GridList>
+          {SearchMovies &&
+            SearchMovies.map((movie, index) => {
+              if (!movie.poster_path) return;
+              return <MovieCard key={index} movie={movie} />;
+            })}
+        </GridList>
+
+        {currentPage <= totalPages && (
+          <button
+            className={`${style["btn"]} ${style["load-more"]} ${
+              isLoading && style["loading"]
+            }}`}
+            onClick={loadMoreHandler}
+          >
+            Load More
+          </button>
+        )}
+      </section>
+    </Container>
   );
 }
 

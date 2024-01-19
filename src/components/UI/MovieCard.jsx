@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import style from "./MovieCard.module.css";
-import { imageBaseURL } from "../api/keys";
-import startImageSrc from "../assets/star.png";
+import { imageBaseURL } from "../../api/keys";
+import startImageSrc from "../../assets/star.png";
 import { Link } from "react-router-dom";
 
 export default function MovieCard({ movie }) {
@@ -35,7 +35,7 @@ export default function MovieCard({ movie }) {
         <div className={style["card-badge"]}>{release_date?.split("-")[0]}</div>
       </div>
 
-      <Link to={`/detail/movie/${id}`} className={style["card-btn"]}></Link>
+      <Link to={`/detail/movie/${id}`} className={style["card-btn"]} />
     </div>
   );
 }

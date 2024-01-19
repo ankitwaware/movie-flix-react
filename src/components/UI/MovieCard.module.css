@@ -1,14 +1,11 @@
 .movie-card {
-  width: 100%;
-}
-
-.movie-card {
   position: relative;
-  min-width: 200px;
+  width: 100%;
+  min-width: 198px;
 }
 
 .movie-card .card-banner {
-  min-width: 200px;
+  min-width: 198px;
 }
 
 .movie-card .title {
@@ -51,9 +48,6 @@
 .title {
   letter-spacing: 0.5px;
   font-weight: var(--weight-bold);
-}
-
-.title {
   font-size: var(--fs-title);
 }
 

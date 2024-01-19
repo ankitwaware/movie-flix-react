@@ -1,6 +1,6 @@
 import styles from "./Header.module.css";
 // image srces
-import logoSrc from "../assets/logo.png";
+import logoSrc from "../assets/logo_crop.jpg";
 import searchIconSrc from "../assets/search.png";
 import closeIconSrc from "../assets/close.png";
 import menuIconSrc from "../assets/menu.png";
@@ -8,15 +8,16 @@ import menuCloseIconSrc from "../assets/menu-close.png";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { menuOpenAtom } from "../store/atoms";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Header() {
   const [searchActive, setSearchActive] = useState(false);
   const [isSeraching, setIsSeraching] = useState(false);
+  const [inputValue, setInputValue] = useState("");
   const navigate = useNavigate();
+
   // atom
   const [isMenuOpen, setIsMenuOpen] = useRecoilState(menuOpenAtom);
-  const [inputValue, setInputValue] = useState("");
 
   function SearchToggleHandler() {
     setIsMenuOpen(false);
@@ -30,7 +31,7 @@ export default function Header() {
     }
 
     setIsSeraching(true);
-    // todo send resuest to movie list  after userstop typing use debounce
+
     let timer = setTimeout(() => {
       // send request to specified path with query
       navigate(`/search/movie?query=${inputValue}`);
@@ -44,13 +45,13 @@ export default function Header() {
 
   return (
     <header className={styles["header"]}>
-      <a href="./index.html" className={styles["logo"]}>
-        <img src={logoSrc} width="140" height="32" alt="Movie-flix home" />
-      </a>
+      <Link to={"/"} href="./index.html" className={styles["logo"]}>
+        <img src={logoSrc} alt="Movie-flix home" />
+      </Link>
 
       <div
         className={`${styles["search-box"]} ${
-          searchActive && styles["search-box-active"]
+          searchActive && styles["active"]
         }`}
       >
         <div
@@ -71,29 +72,18 @@ export default function Header() {
 
           <img
             src={searchIconSrc}
-            width="24"
-            height="24"
             alt="search"
             className={styles["leading-icon"]}
           />
         </div>
 
-        <button
-          className={styles["search-btn"]}
-          onClick={SearchToggleHandler}
-          data-search-toggler
-        >
-          <img
-            src={closeIconSrc}
-            width="24"
-            height="24"
-            alt="close search box"
-          />
+        <button className={styles["search-btn"]} onClick={SearchToggleHandler}>
+          <img src={closeIconSrc} alt="close search box" />
         </button>
       </div>
 
       <button className={styles["search-btn"]} onClick={SearchToggleHandler}>
-        <img src={searchIconSrc} width="24" height="24" alt="open search box" />
+        <img src={searchIconSrc} alt="open search box" />
       </button>
 
       <button
@@ -102,8 +92,6 @@ export default function Header() {
       >
         <img
           src={isMenuOpen ? menuCloseIconSrc : menuIconSrc}
-          width="24"
-          height="24"
           alt="openClose menu"
         />
       </button>

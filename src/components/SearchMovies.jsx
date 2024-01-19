@@ -1,9 +1,10 @@
 import style from "./SearchMovies.module.css";
 import { useLoaderData, useSearchParams } from "react-router-dom";
 import { tmdbAxios } from "../api/axiosConfig";
-import MovieCard from "./MovieCard";
+import MovieCard from "./UI/MovieCard";
 import { useState, useEffect } from "react";
 import Container from "./UI/Container";
+import GridList from "./UI/GridList";
 
 export default function SearchMovies() {
   const response = useLoaderData();
@@ -18,6 +19,7 @@ export default function SearchMovies() {
     setQueryText(query);
   }, [results, searchParams, query]);
 
+  
   return (
     <Container>
       <div className={style["search-model"]}>
@@ -32,13 +34,13 @@ export default function SearchMovies() {
         )}
 
         <div className={style["movie-list"]}>
-          <div className={style["grid-list"]}>
+          <GridList>
             {SearchMovies &&
               SearchMovies.map((movie, index) => {
                 if (!movie.poster_path) return;
                 return <MovieCard key={index} movie={movie} />;
               })}
-          </div>
+          </GridList>
         </div>
       </div>
     </Container>

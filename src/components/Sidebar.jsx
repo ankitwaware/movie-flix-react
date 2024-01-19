@@ -3,7 +3,7 @@ import { tmdbAxios } from "../api/axiosConfig";
 import { useEffect } from "react";
 import tmdbLogoSrc from "../assets/tmdb-logos.png";
 import { menuOpenAtom, genreId_Name } from "../store/atoms";
-import { useRecoilState } from "recoil";
+import {  useRecoilState } from "recoil";
 import { NavLink, useRouteLoaderData } from "react-router-dom";
 import { languageObject } from "../api/keys";
 

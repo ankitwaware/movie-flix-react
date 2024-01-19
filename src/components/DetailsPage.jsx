@@ -4,8 +4,9 @@ import { imageBaseURL } from "../api/keys";
 import { useLoaderData } from "react-router-dom";
 import { tmdbAxios } from "../api/axiosConfig";
 import startImageSrc from "../assets/star.png";
-import VideoCard from "./VideoCard";
+import VideoCard from "./UI/VideoCard";
 import MovieList from "./MovieList";
+import Slider from "./UI/Slider";
 
 export default function DetailPage() {
   const response = useLoaderData();
@@ -63,6 +64,8 @@ export default function DetailPage() {
   }
 
   document.title = `${title} - Tvflix`;
+
+  // todo fix backdrop image
 
   return (
     <Container>
@@ -133,13 +136,11 @@ export default function DetailPage() {
             <h3 className={style["title-large"]}>Trailers and Clips</h3>
           </div>
 
-          <div className={style["slider-list"]}>
-            <div className={style["slider-inner"]}>
-              {YouTubeVideos.map((video, index) => {
-                return <VideoCard key={index} video={video} />;
-              })}
-            </div>
-          </div>
+          <Slider>
+            {YouTubeVideos.map((video, index) => {
+              return <VideoCard key={index} video={video} />;
+            })}
+          </Slider>
         </div>
       </div>
 

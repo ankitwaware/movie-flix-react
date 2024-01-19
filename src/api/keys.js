@@ -1,11 +1,10 @@
 // exporting keys and value
 
-const api_key = "9ae6fabb0127d400b50c64d71f7c049c";
+const api_key = "5abed1d77ecac13dcfddc58836b0c088";
 const imageBaseURL = "https://image.tmdb.org/t/p/";
 
 const languageObject = { hi: "Hindi", en: "English", bn: "Bengali" };
 
-// todo recreate a page section
 const homePageSections = [
   {
     title: "Upcoming Movies",

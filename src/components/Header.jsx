@@ -45,7 +45,7 @@ export default function Header() {
 
   return (
     <header className={styles["header"]}>
-      <Link to={"/"} href="./index.html" className={styles["logo"]}>
+      <Link to={"/"}  className={styles["logo"]}>
         <img src={logoSrc} alt="Movie-flix home" />
       </Link>
 

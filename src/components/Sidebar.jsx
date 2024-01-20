@@ -1,9 +1,8 @@
 import styles from "./Sidebar.module.css";
-import { tmdbAxios } from "../api/axiosConfig";
-import { useEffect } from "react";
+import { Suspense, useEffect, useTransition } from "react";
 import tmdbLogoSrc from "../assets/tmdb-logos.png";
 import { menuOpenAtom, genreId_Name } from "../store/atoms";
-import {  useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { NavLink, useRouteLoaderData } from "react-router-dom";
 import { languageObject } from "../api/keys";
 
@@ -12,9 +11,12 @@ export default function Sidebar() {
   const [isMenuOpen, setIsMenuOpen] = useRecoilState(menuOpenAtom);
   const genres = useRouteLoaderData("root");
   const languageArray = Object.entries(languageObject);
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    setGenreList(genres);
+    startTransition(() => {
+      setGenreList(genres);
+    });
   }, [genres, setGenreList]);
 
   return (
@@ -30,16 +32,19 @@ export default function Sidebar() {
               const { id, name } = genre;
               return (
                 /* todo close menu when click on link */
-                <NavLink
-                  key={index}
-                  to={`/movieList?genreId=${id}`}
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                  }}
-                  className={`${styles["sidebar-link"]}`}
-                >
-                  {name}
-                </NavLink>
+                /* todo add suspense element to genername */
+                <Suspense key={id} fallback={<h3>Loading ...</h3>}>
+                  <NavLink
+                    key={index}
+                    to={`/movieList?genreId=${id}`}
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                    }}
+                    className={`${styles["sidebar-link"]}`}
+                  >
+                    {name}
+                  </NavLink>
+                </Suspense>
               );
             })}
         </div>
@@ -48,17 +53,20 @@ export default function Sidebar() {
 
           {languageArray.map((value, index) => {
             const [shortLang, language] = value;
+            /* todo add suspense element to genername */
             return (
-              <NavLink
-                key={index}
-                to={`/movieList?lang=${shortLang}`}
-                onClick={() => {
-                  setIsMenuOpen(false);
-                }}
-                className={styles["sidebar-link"]}
-              >
-                {language}
-              </NavLink>
+              <Suspense key={index} fallback={<h3>Loading ...</h3>}>
+                <NavLink
+                  key={index}
+                  to={`/movieList?lang=${shortLang}`}
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                  }}
+                  className={styles["sidebar-link"]}
+                >
+                  {language}
+                </NavLink>
+              </Suspense>
             );
           })}
         </div>
@@ -78,12 +86,4 @@ export default function Sidebar() {
       </div>
     </nav>
   );
-}
-
-export async function loader() {
-  const response = await tmdbAxios.get("genre/movie/list", {
-    params: { language: "en" },
-  });
-  const { genres } = response.data;
-  return genres;
 }

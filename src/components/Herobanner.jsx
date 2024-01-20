@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import style from "./Herobanner.module.css";
 import { tmdbAxios } from "../api/axiosConfig";
-
 import { imageBaseURL } from "../api/keys";
 import playCircleSrc from "../assets/play_circle.png";
-
 import { genreId_Name } from "../store/atoms";
-import { useRecoilValue } from "recoil"; 
-
+import { useRecoilValue } from "recoil";
 import { Link } from "react-router-dom";
 
 export default function Herobanner() {
@@ -35,11 +32,11 @@ export default function Herobanner() {
     return genreNameList.join(", ");
   }
 
-  // todo set route loader 
+
   useEffect(() => {
     async function fetchPopularMovies() {
       const response = await tmdbAxios.get("movie/popular", {
-        params: {  page: "1" },
+        params: { page: "1" },
       });
       const { results } = response.data;
       setMovieList(results);
@@ -94,7 +91,7 @@ export default function Herobanner() {
                   <p className={style["genre"]}>{getGernreNames(genre_ids)}</p>
 
                   <p className={style["banner-text"]}>{overview}</p>
-                  
+
                   <Link to={`/detail/movie/${id}`} className={style["btn"]}>
                     <img
                       src={playCircleSrc}
@@ -138,6 +135,6 @@ export default function Herobanner() {
             })}
         </div>
       </div>
-    </section>       
+    </section>
   );
 }

@@ -1,50 +1,55 @@
-import React from "react";
+import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
 import "./index.css";
 import { RecoilRoot } from "recoil";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./components/Home.jsx";
-import MovieResults, {
-  loder as resultLoader,
-} from "./components/MovieResults.jsx";
-import { loader as GenresLoader } from "./components/Sidebar.jsx";
-import SearchMovies, {
-  loader as SearchLoader,
-} from "./components/SearchMovies.jsx";
-import DetailPage, {
-  loader as detailLoader,
-} from "./components/DetailsPage.jsx";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+
+import App from "./App.jsx";
+
+import {
+  Sidebarloader,
+  DetailPageloader,
+  MoviePageloader,
+  SearchPageloader,
+} from "./loader.js";
+
+const HomePage = lazy(() => import("./components/Pages/HomePage.jsx"));
+const MoviesPage = lazy(() => import("./components/Pages/MoviesPage"));
+const DetailPage = lazy(() => import("./components/Pages/DetailPage.jsx"));
+const SearchMoviesPage = lazy(() =>
+  import("./components/Pages/SearchMoviesPage.jsx")
+);
 
 const router = createBrowserRouter([
   {
     id: "root",
     path: "/",
     element: <App />,
-    loader: GenresLoader,
+    loader: Sidebarloader,
+    errorElement: <div>Error Page</div>,
     children: [
       {
         id: "home",
         index: true,
-        element: <Home />,
+        element: <HomePage />,
       },
       {
         id: "detail",
         path: "/detail/movie/:movieId",
         element: <DetailPage />,
-        loader: detailLoader,
+        loader: DetailPageloader,
       },
       {
         id: "movieList",
         path: "/movieList",
-        element: <MovieResults />,
-        loader: resultLoader,
+        element: <MoviesPage />,
+        loader: MoviePageloader,
       },
       {
         id: "searchMovies",
         path: "/search/movie",
-        element: <SearchMovies />,
-        loader: SearchLoader,
+        element: <SearchMoviesPage />,
+        loader: SearchPageloader,
       },
     ],
   },

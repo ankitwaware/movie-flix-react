@@ -1,13 +1,12 @@
-import { useEffect } from "react";
-import MovieCard from "./UI/MovieCard";
+import { useState, useEffect, Suspense, useTransition } from "react";
 import style from "./MovieList.module.css";
-import { useState } from "react";
 import { tmdbAxios } from "../api/axiosConfig";
+import MovieCard from "./UI/MovieCard";
 import Slider from "./UI/Slider";
 
-// eslint-disable-next-line react/prop-types
 export default function MovieList({ title, path }) {
   const [movieList, setMovieList] = useState([]);
+  const [isPending, startTransition] = useTransition();
 
   /**
    * Fetch movies and send results
@@ -23,16 +22,24 @@ export default function MovieList({ title, path }) {
         },
       });
       const { results } = response.data;
-      setMovieList(results);
+
+      startTransition(() => {
+        setMovieList(results);
+      });
     }
     fetchMovies(path);
-  }, [path]);
+
+  }, [path, title]);
 
   return (
     <section className={style["movie-list"]} aria-label={title}>
       <div className={style["title-wrapper"]}>
         <h3 className={style["title-large"]}>{title}</h3>
       </div>
+
+      {
+        movieList.length === 0 && <h4>Not found {title}</h4>
+      }
 
       {/* Todo add Suspence to slider innner  */}
       <Slider>

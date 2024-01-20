@@ -1,16 +1,18 @@
-import { useEffect, useState } from "react";
-import MovieCard from "./UI/MovieCard";
-import style from "./MovieResults.module.css";
-import { tmdbAxios } from "../api/axiosConfig";
-import { useRouteLoaderData, useSearchParams } from "react-router-dom";
+import { Suspense, lazy, useEffect, useState, useTransition } from "react";
+import style from "./MoviesPage.module.css";
+import { tmdbAxios } from "../../api/axiosConfig";
+import { useLoaderData, useSearchParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { genreId_Name } from "../store/atoms";
-import { languageObject } from "../api/keys";
-import Container from "./UI/Container";
-import GridList from "./UI/GridList";
+import { genreId_Name } from "../../store/atoms";
+import { languageObject } from "../../api/keys";
 
-export default function MovieResults() {
-  const response = useRouteLoaderData("movieList");
+import Container from "../UI/Container";
+// lazy loading components
+const GridList = lazy(() => import("../UI/GridList"));
+const MovieCard = lazy(() => import("../UI/MovieCard"));
+
+export default function MoviesPage() {
+  const response = useLoaderData();
   const { results, total_pages } = response.data;
   const genreid_name = useRecoilValue(genreId_Name);
   const [SearchParams] = useSearchParams();
@@ -19,6 +21,7 @@ export default function MovieResults() {
   const [currentPage, setcurrentPage] = useState(2);
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   function genername(genreId) {
     const genre = genreid_name.find((value) => value.id === Number(genreId));
@@ -36,11 +39,13 @@ export default function MovieResults() {
   }
 
   /* set Header Title Tag */
-  document.title = `${ResultFor} Movies - Tvflix`;
+  document.title = `${ResultFor} Movie-flix`;
 
   useEffect(() => {
-    setSearchMovies(results);
-    setTotalPages(total_pages);
+    startTransition(() => {
+      setSearchMovies(results);
+      setTotalPages(total_pages);
+    });
   }, [results, total_pages]);
 
   async function loadMoreHandler() {
@@ -63,7 +68,9 @@ export default function MovieResults() {
     const { results } = response.data;
 
     setIsLoading(false);
-    setSearchMovies((prev) => [...prev, ...results]);
+    startTransition(() => {
+      setSearchMovies((prev) => [...prev, ...results]);
+    });
   }
 
   return (
@@ -80,7 +87,14 @@ export default function MovieResults() {
           {SearchMovies &&
             SearchMovies.map((movie, index) => {
               if (!movie.poster_path) return;
-              return <MovieCard key={index} movie={movie} />;
+              {
+                /* todo add sus eleme for movie card */
+              }
+              return (
+                <Suspense key={index} fallback={<h2>LOading Card ...</h2>}>
+                  <MovieCard key={index} movie={movie} />
+                </Suspense>
+              );
             })}
         </GridList>
 
@@ -97,20 +111,4 @@ export default function MovieResults() {
       </section>
     </Container>
   );
-}
-
-export async function loder({ request }) {
-  const params = new URL(request.url).searchParams;
-
-  const response = await tmdbAxios.get("discover/movie", {
-    params: {
-      page: "1",
-      include_adult: "false",
-      include_video: "false",
-      sort_by: "popularity.desc",
-      ...(params.has("genreId") && { with_genres: params.get("genreId") }),
-      ...(params.has("lang") && { with_original_language: params.get("lang") }),
-    },
-  });
-  return response;
 }

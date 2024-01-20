@@ -3,7 +3,7 @@ import style from "./VideoCard.module.css";
 export default function VideoCard({ video }) {
   const { key, name } = video;
 
-  console.log(key, name);
+  console.log(video);
 
   return (
     <div className={style["video-card"]}>

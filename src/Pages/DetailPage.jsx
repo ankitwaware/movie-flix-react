@@ -1,15 +1,27 @@
 import style from "./DetailPage.module.css";
 import { useLoaderData } from "react-router-dom";
-import { Suspense, lazy, useEffect, useState, useTransition } from "react";
-import { imageBaseURL } from "../../api/keys";
-import startImageSrc from "../../assets/star.png";
+import { Suspense, lazy, useTransition } from "react";
+import { imageBaseURL } from "../api/keys";
+import startImageSrc from "../assets/star.png";
+import { tmdbAxios } from "../api/axiosConfig";
+import Container from "../components/UI/Container";
 
-import Container from "../UI/Container";
+export async function DetailPageloader({ params }) {
+  const { movieId } = params;
+
+  const response = await tmdbAxios.get(`movie/${movieId}`, {
+    params: {
+      append_to_response: "casts,videos,releases,images",
+    },
+  });
+
+  return response;
+}
 
 // lazy component
-const MovieList = lazy(() => import("../MovieList"));
-const Slider = lazy(() => import("../UI/Slider"));
-const VideoCard = lazy(() => import("../UI/VideoCard"));
+const MovieList = lazy(() => import("../components/MovieList"));
+const Slider = lazy(() => import("../components/UI/Slider"));
+const VideoCard = lazy(() => import("../components/UI/VideoCard"));
 
 // todo add sus ele to detail page
 
@@ -152,10 +164,10 @@ export default function DetailPage() {
               <h3 className={style["title-large"]}>Trailers and Clips</h3>
             </div>
 
-            <Slider> 
-              {
-                YouTubeVideos.length === 0 && <h3>No Trailers and Clips found</h3>
-              }
+            <Slider>
+              {YouTubeVideos.length === 0 && (
+                <h3>No Trailers and Clips found</h3>
+              )}
               {YouTubeVideos.map((video, index) => {
                 return <VideoCard key={index} video={video} />;
               })}

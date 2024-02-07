@@ -1,15 +1,31 @@
 import { Suspense, lazy, useEffect, useState, useTransition } from "react";
 import style from "./MoviesPage.module.css";
-import { tmdbAxios } from "../../api/axiosConfig";
+import { tmdbAxios } from "../api/axiosConfig";
 import { useLoaderData, useSearchParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { genreId_Name } from "../../store/atoms";
-import { languageObject } from "../../api/keys";
+import { genreId_Name } from "../store/atoms";
+import { languageObject } from "../api/keys";
 
-import Container from "../UI/Container";
+import Container from "../components/UI/Container";
 // lazy loading components
-const GridList = lazy(() => import("../UI/GridList"));
-const MovieCard = lazy(() => import("../UI/MovieCard"));
+const GridList = lazy(() => import("../components/UI/GridList"));
+const MovieCard = lazy(() => import("../components/UI/MovieCard"));
+
+export async function MoviePageloader({ request }) {
+  const params = new URL(request.url).searchParams;
+
+  const response = await tmdbAxios.get("discover/movie", {
+    params: {
+      page: "1",
+      include_adult: "false",
+      include_video: "false",
+      sort_by: "popularity.desc",
+      ...(params.has("genreId") && { with_genres: params.get("genreId") }),
+      ...(params.has("lang") && { with_original_language: params.get("lang") }),
+    },
+  });
+  return response;
+}
 
 export default function MoviesPage() {
   const response = useLoaderData();

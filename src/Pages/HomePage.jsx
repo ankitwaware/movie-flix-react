@@ -1,11 +1,11 @@
 import { Suspense, lazy } from "react";
 
-import Container from "../UI/Container";
+import Container from "../components/UI/Container";
 // lazy loading components
-const Herobanner = lazy(() => import("../Herobanner"));
-const MovieList = lazy(() => import("../MovieList"));
+const Herobanner = lazy(() => import("../components/Herobanner"));
+const MovieList = lazy(() => import("../components/MovieList"));
 
-import { homePageSections } from "../../api/keys";
+import { homePageSections } from "../api/keys";
 
 export default function Home() {
   return (

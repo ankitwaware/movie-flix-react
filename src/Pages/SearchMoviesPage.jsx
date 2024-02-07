@@ -1,11 +1,27 @@
 import style from "./SearchMoviesPage.module.css";
 import { useLoaderData, useSearchParams } from "react-router-dom";
 import { useState, useEffect, Suspense, useTransition, lazy } from "react";
+import { tmdbAxios } from "../api/axiosConfig";
 
-import Container from "../UI/Container";
+import Container from "../components/UI/Container";
+
 // lazy loading components
-const GridList = lazy(() => import("../UI/GridList"));
-const MovieCard = lazy(() => import("../UI/MovieCard"));
+const GridList = lazy(() => import("../components/UI/GridList"));
+const MovieCard = lazy(() => import("../components/UI/MovieCard"));
+
+export async function SearchPageloader({ request }) {
+  const queryParams = new URL(request.url).searchParams;
+  const queryText = queryParams.get("query");
+  const response = await tmdbAxios.get("search/movie", {
+    params: {
+      query: queryText,
+      page: "1",
+      include_adult: "false",
+    },
+  });
+
+  return response;
+}
 
 export default function SearchMoviesPage() {
   const response = useLoaderData();

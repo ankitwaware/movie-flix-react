@@ -5,6 +5,15 @@ import { menuOpenAtom, genreId_Name } from "../store/atoms";
 import { useRecoilState } from "recoil";
 import { NavLink, useRouteLoaderData } from "react-router-dom";
 import { languageObject } from "../api/keys";
+import { tmdbAxios } from "../api/axiosConfig";
+
+export async function Sidebarloader() {
+  const response = await tmdbAxios.get("genre/movie/list", {
+    params: { language: "en" },
+  });
+  const { genres } = response.data;
+  return genres;
+}
 
 export default function Sidebar() {
   const [genreList, setGenreList] = useRecoilState(genreId_Name);
@@ -87,3 +96,5 @@ export default function Sidebar() {
     </nav>
   );
 }
+
+

@@ -8,12 +8,6 @@ export default function MovieList({ title, path }) {
   const [movieList, setMovieList] = useState([]);
   const [isPending, startTransition] = useTransition();
 
-  /**
-   * Fetch movies and send results
-   * @param {url} path
-   * @returns {Array} movies
-   */
-
   useEffect(() => {
     async function fetchMovies(path) {
       const response = await tmdbAxios.get(path, {
@@ -28,8 +22,13 @@ export default function MovieList({ title, path }) {
       });
     }
     fetchMovies(path);
-
   }, [path, title]);
+
+  if (movieList.length === 0) {
+    return (
+      <section className={style["movie-list"]} aria-label={title}></section>
+    );
+  }
 
   return (
     <section className={style["movie-list"]} aria-label={title}>
@@ -37,9 +36,7 @@ export default function MovieList({ title, path }) {
         <h3 className={style["title-large"]}>{title}</h3>
       </div>
 
-      {
-        movieList.length === 0 && <h4>Not found {title}</h4>
-      }
+      {movieList.length === 0 && <h4>Not found {title}</h4>}
 
       {/* Todo add Suspence to slider innner  */}
       <Slider>

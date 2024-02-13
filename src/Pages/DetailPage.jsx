@@ -1,6 +1,6 @@
 import style from "./DetailPage.module.css";
 import { useLoaderData } from "react-router-dom";
-import { Suspense, lazy, useTransition } from "react";
+import { Suspense, lazy } from "react";
 import { imageBaseURL } from "../api/keys";
 import startImageSrc from "../assets/star.png";
 import { tmdbAxios } from "../api/axiosConfig";
@@ -24,10 +24,8 @@ const Slider = lazy(() => import("../components/UI/Slider"));
 const VideoCard = lazy(() => import("../components/UI/VideoCard"));
 
 // todo add sus ele to detail page
-
 export default function DetailPage() {
   const response = useLoaderData();
-  const [isPending, startTransition] = useTransition();
 
   const {
     backdrop_path,
@@ -45,8 +43,6 @@ export default function DetailPage() {
     casts: { cast, crew },
     videos: { results: videos },
   } = response.data;
-
-  console.log(response.data);
 
   const YouTubeVideos = filterVideos(videos);
 

@@ -19,4 +19,5 @@
 
 ## Usage
 
-1. Access the aplication in your browser at `http://localhost:5173`
+1. Access the aplication in your browser at [movieFlix.com]( https://movie-flix-ankit.netlify.app/)
+1. Access the aplication in your browser at local `http://localhost:5173`

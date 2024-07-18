@@ -10,7 +10,6 @@ import { tmdbAxios } from "../api/axiosConfig";
 export async function Sidebarloader() {
   const response = await tmdbAxios.get("genre/movie/list");
   const { genres } = response.data;
-  console.log(response);
   return genres;
 }
 

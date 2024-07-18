@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import style from "./Herobanner.module.css";
 import { tmdbAxios } from "../api/axiosConfig";
-import { imageBaseURL } from "../api/keys";
+import { imageBaseURL } from "../api/data";
 import playCircleSrc from "../assets/play_circle.png";
 import { genreId_Name } from "../store/atoms";
 import { useRecoilValue } from "recoil";
@@ -31,7 +31,6 @@ export default function Herobanner() {
     }
     return genreNameList.join(", ");
   }
-
 
   useEffect(() => {
     async function fetchPopularMovies() {

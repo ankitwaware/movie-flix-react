@@ -5,9 +5,9 @@ import Container from "../components/UI/Container";
 const Herobanner = lazy(() => import("../components/Herobanner"));
 const MovieList = lazy(() => import("../components/MovieList"));
 
-import { homePageSections } from "../api/keys";
+import { homePageSections } from "../api/data";
 
-export default function Home() {
+export function HomePage() {
   return (
     <Container>
       {/*todo sus comp. for hero banner */}

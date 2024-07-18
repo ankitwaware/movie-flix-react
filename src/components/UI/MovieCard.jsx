@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import style from "./MovieCard.module.css";
-import { imageBaseURL } from "../../api/keys";
+import { imageBaseURL } from "../../api/data";
 import startImageSrc from "../../assets/star.png";
 import { Link } from "react-router-dom";
 

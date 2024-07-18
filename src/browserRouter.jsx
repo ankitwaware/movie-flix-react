@@ -1,18 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
-import { lazy } from "react";
-
-// Loaders
+import { RootPage } from "./Pages/RootPage.jsx";
 import { Sidebarloader } from "./components/Sidebar.jsx";
-import { DetailPageloader } from "./Pages/DetailPage.jsx";
-import { MoviePageloader } from "./Pages/MoviesPage.jsx";
-import { SearchPageloader } from "./Pages/SearchMoviesPage.jsx";
-
-// Pages
-const RootPage = lazy(() => import("./Pages/RootPage.jsx"));
-const HomePage = lazy(() => import("./Pages/HomePage.jsx"));
-const DetailPage = lazy(() => import("./Pages/DetailPage.jsx"));
-const MoviesPage = lazy(() => import("./Pages/MoviesPage.jsx"));
-const SearchMoviesPage = lazy(() => import("./Pages/SearchMoviesPage.jsx"));
+import ErrorPage from "./Pages/ErrorPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -20,30 +9,49 @@ const router = createBrowserRouter([
     path: "/",
     Component: RootPage,
     loader: Sidebarloader,
-    errorElement: <div>Error Page</div>,
+    ErrorBoundary: ErrorPage,
     children: [
       {
         id: "home",
         index: true,
-        Component: HomePage,
+        async lazy() {
+          const { HomePage } = await import("./Pages/HomePage.jsx");
+          return { Component: HomePage };
+        },
+        ErrorBoundary: ErrorPage,
       },
       {
         id: "detail",
         path: "/detail/movie/:movieId",
-        loader: DetailPageloader,
-        Component: DetailPage,
+        async lazy() {
+          const { DetailPage, DetailPageloader } = await import(
+            "./Pages/DetailPage.jsx"
+          );
+          return { Component: DetailPage, loader: DetailPageloader };
+        },
+        ErrorBoundary: ErrorPage,
       },
       {
         id: "movieList",
         path: "/movieList",
-        Component: MoviesPage,
-        loader: MoviePageloader,
+        async lazy() {
+          const { MoviesPage, MoviePageloader } = await import(
+            "./Pages/MoviesPage.jsx"
+          );
+          return { Component: MoviesPage, loader: MoviePageloader };
+        },
+        ErrorBoundary: ErrorPage,
       },
       {
         id: "searchMovies",
         path: "/search/movie",
-        Component: SearchMoviesPage,
-        loader: SearchPageloader,
+        async lazy() {
+          const { SearchMoviesPage, SearchPageloader } = await import(
+            "./Pages/SearchMoviesPage.jsx"
+          );
+          return { Component: SearchMoviesPage, loader: SearchPageloader };
+        },
+        ErrorBoundary: ErrorPage,
       },
     ],
   },

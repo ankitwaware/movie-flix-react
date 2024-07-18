@@ -1,7 +1,7 @@
 import style from "./DetailPage.module.css";
 import { useLoaderData } from "react-router-dom";
 import { Suspense, lazy } from "react";
-import { imageBaseURL } from "../api/keys";
+import { imageBaseURL } from "../api/data";
 import startImageSrc from "../assets/star.png";
 import { tmdbAxios } from "../api/axiosConfig";
 import Container from "../components/UI/Container";
@@ -24,7 +24,7 @@ const Slider = lazy(() => import("../components/UI/Slider"));
 const VideoCard = lazy(() => import("../components/UI/VideoCard"));
 
 // todo add sus ele to detail page
-export default function DetailPage() {
+export function DetailPage() {
   const response = useLoaderData();
 
   const {

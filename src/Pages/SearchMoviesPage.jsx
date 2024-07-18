@@ -23,7 +23,7 @@ export async function SearchPageloader({ request }) {
   return response;
 }
 
-export default function SearchMoviesPage() {
+export function SearchMoviesPage() {
   const response = useLoaderData();
   const { results } = response.data;
   const [SearchMovies, setSearchMovies] = useState([]);

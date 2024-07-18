@@ -4,7 +4,7 @@ import { tmdbAxios } from "../api/axiosConfig";
 import { useLoaderData, useSearchParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { genreId_Name } from "../store/atoms";
-import { languageObject } from "../api/keys";
+import { languageObject } from "../api/data";
 
 import Container from "../components/UI/Container";
 // lazy loading components
@@ -27,7 +27,7 @@ export async function MoviePageloader({ request }) {
   return response;
 }
 
-export default function MoviesPage() {
+export function MoviesPage() {
   const response = useLoaderData();
   const { results, total_pages } = response.data;
   const genreid_name = useRecoilValue(genreId_Name);

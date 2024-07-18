@@ -1,8 +1,21 @@
-# React + Vite
+<h1 align='center'>Movie Flix</h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Table of contents
 
-Currently, two official plugins are available:
+1. clone the repository:
+   ```bash
+   git clone https://github.com/ankitwaware/movie-flix-react
+   ```
+2. Create a `.env` file based on the `.env.example` file
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Usage
+
+1. Access the aplication in your browser at `http://localhost:3000`

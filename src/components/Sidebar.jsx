@@ -4,14 +4,13 @@ import tmdbLogoSrc from "../assets/tmdb-logos.png";
 import { menuOpenAtom, genreId_Name } from "../store/atoms";
 import { useRecoilState } from "recoil";
 import { NavLink, useRouteLoaderData } from "react-router-dom";
-import { languageObject } from "../api/keys";
+import { languageObject } from "../api/data";
 import { tmdbAxios } from "../api/axiosConfig";
 
 export async function Sidebarloader() {
-  const response = await tmdbAxios.get("genre/movie/list", {
-    params: { language: "en" },
-  });
+  const response = await tmdbAxios.get("genre/movie/list");
   const { genres } = response.data;
+  console.log(response);
   return genres;
 }
 
@@ -81,7 +80,6 @@ export default function Sidebar() {
         </div>
 
         <div className={styles["sidebar-footer"]}>
-          {/* todo add twitter link */}
           <p className={styles["copyright"]}>
             Copyright 2024 <a href="#twitter-a">Ankit</a>
           </p>
@@ -96,5 +94,3 @@ export default function Sidebar() {
     </nav>
   );
 }
-
-

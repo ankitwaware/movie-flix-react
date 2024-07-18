@@ -7,15 +7,16 @@
    git clone https://github.com/ankitwaware/movie-flix-react
    ```
 2. Create a `.env` file based on the `.env.example` file
-3. Install dependencies:
+3. Genrate API KEY from [tmdb.org](https://www.themoviedb.org/)
+4. Install dependencies:
    ```bash
    npm install
    ```
-4. Start the development server:
+5. Start the development server:
    ```bash
    npm run dev
    ```
 
 ## Usage
 
-1. Access the aplication in your browser at `http://localhost:3000`
+1. Access the aplication in your browser at `http://localhost:5173`
